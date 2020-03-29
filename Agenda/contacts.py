@@ -4,9 +4,9 @@
 class Contact:
 
     def __init__(self, name, phone, email):
-        self._name = name
-        self._phone = phone
-        self._email = email
+        self.name = name
+        self.phone = phone
+        self.email = email
 
 
 class ContactBook:
@@ -14,7 +14,39 @@ class ContactBook:
         self._contacts = []
 
     def add(self, name, phone, email):
-        print('name: {}, phone: {}, email: {}'.format(name, phone, email))
+        contact = Contact(name, phone, email)
+        self._contacts.append(contact)
+
+    def show_all(self):
+        for contact in self._contacts:
+            self._print_contact(contact)
+    
+    def delete(self, name):
+        for idx, contact in enumerate(self._contacts):
+            if contact.name.lower() == name.lower():
+                del self._contacts[idx]
+                print('Se eliminó el contacto {} correctamente.'.format(name))
+                break
+        
+    def search(self,name):
+        for contact in self._contacts:
+            if contact.name.lower() == name.lower():
+                self._print_contact(contact)
+                break
+        else:
+            self._not_found()
+
+    def _not_found(self):
+        print('¡Contacto no encontrado!')
+
+    def _print_contact(self, contact):
+        print('--**--**--**--')
+        print('Nombre: {}'.format(contact.name))
+        print('Telefono: {}'.format(contact.phone))
+        print('Email: {}'.format(contact.email))
+        print('')
+        
+
 
 def run():
 
@@ -43,13 +75,15 @@ def run():
             print('actualizar contacto')
 
         elif command == 'b':
-            print('buscar contacto')
+            name = str(raw_input('Escribe el nombre del contacto: '))
+            contact_book.search(name)
 
         elif command == 'e':
-            print('eliminar contacto')
+            name = str(raw_input('Escribe el nombre del contacto: '))
+            contact_book.delete(name)
 
         elif command == 'l':
-            print('listar contactos')
+            contact_book.show_all()
 
         elif command == 's':
             break
